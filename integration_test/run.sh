@@ -1,14 +1,14 @@
 #!/bin/sh
 
-TESTDIR=/tmp/rust_bitcoincore_rpc_test
+TESTDIR=/tmp/rust_blackcoinmore_rpc_test
 
 rm -rf ${TESTDIR}
 mkdir -p ${TESTDIR}/1 ${TESTDIR}/2
 
-# To kill any remaining open bitcoind.
-killall -9 bitcoind
+# To kill any remaining open blackmored.
+killall -9 blackmored
 
-bitcoind -regtest \
+blackmored -regtest \
     -datadir=${TESTDIR}/1 \
     -port=12348 \
     -server=0 \
@@ -19,16 +19,16 @@ PID1=$!
 sleep 3
 
 BLOCKFILTERARG=""
-if bitcoind -version | grep -q "v0\.\(19\|2\)"; then
+if blackmored -version | grep -q "v0\.\(19\|2\)"; then
     BLOCKFILTERARG="-blockfilterindex=1"
 fi
 
 FALLBACKFEEARG=""
-if bitcoind -version | grep -q "v0\.2"; then
+if blackmored -version | grep -q "v0\.2"; then
     FALLBACKFEEARG="-fallbackfee=0.00001000"
 fi
 
-bitcoind -regtest $BLOCKFILTERARG $FALLBACKFEEARG \
+blackmored -regtest $BLOCKFILTERARG $FALLBACKFEEARG \
     -datadir=${TESTDIR}/2 \
     -connect=127.0.0.1:12348 \
     -rpcport=12349 \

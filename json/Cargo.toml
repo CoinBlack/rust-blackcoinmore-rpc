@@ -1,21 +1,22 @@
 [package]
-name = "bitcoincore-rpc-json"
+name = "blackcoinmore-rpc-json"
 version = "0.17.0"
 authors = [
     "Steven Roose <steven@stevenroose.org>",
     "Jean Pierre Dudey <jeandudey@hotmail.com>",
-    "Dawid Ciężarkiewicz <dpc@dpc.pw>"
+    "Dawid Ciężarkiewicz <dpc@dpc.pw>",
+    "lateminer <lateminer@protonmail.com>",
 ]
 license = "CC0-1.0"
-homepage = "https://github.com/rust-bitcoin/rust-bitcoincore-rpc/"
-repository = "https://github.com/rust-bitcoin/rust-bitcoincore-rpc/"
-description = "JSON-enabled type structs for bitcoincore-rpc crate."
-keywords = [ "crypto", "bitcoin", "bitcoin-core", "rpc" ]
+homepage = "https://github.com/CoinBlack/rust-blackcoinmore-rpc/"
+repository = "https://github.com/CoinBlack/rust-blackcoinmore-rpc/"
+description = "JSON-enabled type structs for blackcoinmore-rpc crate."
+keywords = [ "crypto", "bitcoin", "bitcoin-core", "blackcoin", "blackcoin-more", "rpc" ]
 readme = "README.md"
 edition = "2018"
 
 [lib]
-name = "bitcoincore_rpc_json"
+name = "blackcoinmore_rpc_json"
 path = "src/lib.rs"
 
 [dependencies]

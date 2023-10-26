@@ -1,4 +1,4 @@
-//! # rust-bitcoincore-rpc integration test
+//! # rust-blackcoinmore-rpc integration test
 //!
 //! The test methods are named to mention the methods tested.
 //! Individual test methods don't use any methods not tested before or
@@ -18,9 +18,9 @@ use std::str::FromStr;
 
 use bitcoin::absolute::LockTime;
 use bitcoin::address::NetworkChecked;
-use bitcoincore_rpc::json;
-use bitcoincore_rpc::jsonrpc::error::Error as JsonRpcError;
-use bitcoincore_rpc::{Auth, Client, Error, RpcApi};
+use blackcoinmore_rpc::json;
+use blackcoinmore_rpc::jsonrpc::error::Error as JsonRpcError;
+use blackcoinmore_rpc::{Auth, Client, Error, RpcApi};
 
 use crate::json::BlockStatsFields as BsFields;
 use bitcoin::consensus::encode::{deserialize, serialize_hex};
@@ -31,7 +31,7 @@ use bitcoin::{
     Address, Amount, Network, OutPoint, PrivateKey,
     Sequence, SignedAmount, Transaction, TxIn, TxOut, Txid, Witness,
 };
-use bitcoincore_rpc::bitcoincore_rpc_json::{
+use blackcoinmore_rpc::blackcoinmore_rpc_json::{
     GetBlockTemplateModes, GetBlockTemplateRules, ScanTxOutRequest,
 };
 
@@ -39,6 +39,7 @@ lazy_static! {
     static ref SECP: secp256k1::Secp256k1<secp256k1::All> = secp256k1::Secp256k1::new();
     static ref NET: Network = Network::Regtest;
     /// A random address not owned by the node.
+    /// BLACKCOIN TODO!!!
     static ref RANDOM_ADDRESS: Address<NetworkChecked> = Address::from_str("mgR9fN5UzZ64mSUUtk6NwxxS6kwVfoEtPG").unwrap().assume_checked();
     /// The default fee amount to use when needed.
     static ref FEE: Amount = Amount::from_btc(0.001).unwrap();
@@ -48,7 +49,7 @@ struct StdLogger;
 
 impl log::Log for StdLogger {
     fn enabled(&self, metadata: &log::Metadata) -> bool {
-        metadata.target().contains("jsonrpc") || metadata.target().contains("bitcoincore_rpc")
+        metadata.target().contains("jsonrpc") || metadata.target().contains("blackcoinmore_rpc")
     }
 
     fn log(&self, record: &log::Record) {
@@ -116,7 +117,7 @@ fn get_rpc_url() -> String {
     return std::env::var("RPC_URL").expect("RPC_URL must be set");
 }
 
-fn get_auth() -> bitcoincore_rpc::Auth {
+fn get_auth() -> blackcoinmore_rpc::Auth {
     if let Ok(cookie) = std::env::var("RPC_COOKIE") {
         return Auth::CookieFile(cookie.into());
     } else if let Ok(user) = std::env::var("RPC_USER") {
