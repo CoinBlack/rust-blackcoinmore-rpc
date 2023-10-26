@@ -113,8 +113,11 @@ pub struct GetNetworkInfoResult {
     pub networks: Vec<GetNetworkInfoResultNetwork>,
     #[serde(rename = "relayfee", with = "bitcoin::amount::serde::as_btc")]
     pub relay_fee: Amount,
+    // Blackcoin: remove incremental fee
+    /*
     #[serde(rename = "incrementalfee", with = "bitcoin::amount::serde::as_btc")]
     pub incremental_fee: Amount,
+    */
     #[serde(rename = "localaddresses")]
     pub local_addresses: Vec<GetNetworkInfoResultAddress>,
     pub warnings: String,
@@ -253,8 +256,11 @@ pub struct GetBlockStatsResult {
     pub avg_tx_size: u32,
     #[serde(rename = "blockhash")]
     pub block_hash: bitcoin::BlockHash,
+    // Blackcoin: remove feerate_percentiles
+    /*
     #[serde(rename = "feerate_percentiles")]
     pub fee_rate_percentiles: FeeRatePercentiles,
+    */
     pub height: u64,
     pub ins: usize,
     #[serde(rename = "maxfee", with = "bitcoin::amount::serde::as_sat")]
@@ -316,8 +322,11 @@ pub struct GetBlockStatsResultPartial {
     pub avg_tx_size: Option<u32>,
     #[serde(default, rename = "blockhash", skip_serializing_if = "Option::is_none")]
     pub block_hash: Option<bitcoin::BlockHash>,
+    // Blackcoin: remove feerate_percentiles
+    /*
     #[serde(default, rename = "feerate_percentiles", skip_serializing_if = "Option::is_none")]
     pub fee_rate_percentiles: Option<FeeRatePercentiles>,
+    */
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub height: Option<u64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -426,7 +435,10 @@ pub enum BlockStatsFields {
     AverageFeeRate,
     AverageTxSize,
     BlockHash,
+    // Blackcoin: remove feerate_percentiles
+    /*
     FeeRatePercentiles,
+    */
     Height,
     Ins,
     MaxFee,
@@ -460,7 +472,10 @@ impl BlockStatsFields {
             BlockStatsFields::AverageFeeRate => "avgfeerate",
             BlockStatsFields::AverageTxSize => "avgtxsize",
             BlockStatsFields::BlockHash => "blockhash",
+            // Blackcoin: remove feerate_percentiles
+            /*
             BlockStatsFields::FeeRatePercentiles => "feerate_percentiles",
+            */
             BlockStatsFields::Height => "height",
             BlockStatsFields::Ins => "ins",
             BlockStatsFields::MaxFee => "maxfee",
@@ -690,8 +705,11 @@ pub struct WalletTxInfo {
     pub txid: bitcoin::Txid,
     pub time: u64,
     pub timereceived: u64,
+    // Blackcoin: remove BIP125
+    /*
     #[serde(rename = "bip125-replaceable")]
     pub bip125_replaceable: Bip125Replaceable,
+    */
     /// Conflicting transaction ids
     #[serde(rename = "walletconflicts")]
     pub wallet_conflicts: Vec<bitcoin::Txid>,
@@ -1032,6 +1050,8 @@ pub struct GetBlockchainInfoResult {
     pub chain_work: Vec<u8>,
     /// The estimated size of the block and undo files on disk
     pub size_on_disk: u64,
+    // Blackcoin: remove pruning
+    /*
     /// If the blocks are subject to pruning
     pub pruned: bool,
     /// Lowest-height complete block stored (only present if pruning is enabled)
@@ -1041,6 +1061,7 @@ pub struct GetBlockchainInfoResult {
     pub automatic_pruning: Option<bool>,
     /// The target size used by pruning (only present if automatic pruning is enabled)
     pub prune_target_size: Option<u64>,
+    */
     /// Status of softforks in progress
     #[serde(default)]
     pub softforks: HashMap<String, Softfork>,
@@ -1120,9 +1141,12 @@ pub struct GetMempoolEntryResult {
     /// Unconfirmed transactions spending outputs from this transaction
     #[serde(rename = "spentby")]
     pub spent_by: Vec<bitcoin::Txid>,
+    // Blackcoin: remove BIP125
+    /*
     /// Whether this transaction could be replaced due to BIP125 (replace-by-fee)
     #[serde(rename = "bip125-replaceable")]
     pub bip125_replaceable: bool,
+    */
     /// Whether this transaction is currently unbroadcast (initial broadcast not yet acknowledged by any peers)
     /// Added in Bitcoin Core v0.21
     pub unbroadcast: Option<bool>,

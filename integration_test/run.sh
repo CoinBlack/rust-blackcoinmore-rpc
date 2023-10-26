@@ -23,12 +23,7 @@ if blackmored -version | grep -q "v0\.\(19\|2\)"; then
     BLOCKFILTERARG="-blockfilterindex=1"
 fi
 
-FALLBACKFEEARG=""
-if blackmored -version | grep -q "v0\.2"; then
-    FALLBACKFEEARG="-fallbackfee=0.00001000"
-fi
-
-blackmored -regtest $BLOCKFILTERARG $FALLBACKFEEARG \
+blackmored -regtest $BLOCKFILTERARG \
     -datadir=${TESTDIR}/2 \
     -connect=127.0.0.1:12348 \
     -rpcport=12349 \
