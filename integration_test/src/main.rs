@@ -586,7 +586,7 @@ fn test_sign_raw_transaction_with_send_raw_transaction(cl: &Client) {
     let unspent = unspent.into_iter().nth(0).unwrap();
 
     let tx = Transaction {
-        version: 1,
+        version: bitcoin::transaction::Version::ONE,
         lock_time: LockTime::ZERO,
         input: vec![TxIn {
             previous_output: OutPoint {
@@ -615,7 +615,7 @@ fn test_sign_raw_transaction_with_send_raw_transaction(cl: &Client) {
     let txid = cl.send_raw_transaction(&res.transaction().unwrap()).unwrap();
 
     let tx = Transaction {
-        version: 1,
+        version: bitcoin::transaction::Version::ONE,
         lock_time: LockTime::ZERO,
         input: vec![TxIn {
             previous_output: OutPoint {
