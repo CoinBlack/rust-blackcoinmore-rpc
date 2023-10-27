@@ -203,7 +203,7 @@ fn main() {
     */
     test_ping(&cl);
     // Blackcoin TODO: test_get_peer_info(&cl);
-    // Blackcoin TODO: test_rescan_blockchain(&cl);
+    test_rescan_blockchain(&cl);
     // Blackcoin TODO: test_create_wallet(&cl);
     test_get_tx_out_set_info(&cl);
     test_get_chain_tips(&cl);
