@@ -28,7 +28,7 @@ use std::collections::HashMap;
 use bitcoin::address::NetworkUnchecked;
 use bitcoin::block::Version;
 use bitcoin::consensus::encode;
-use bitcoin::hex::FromHex;
+use bitcoin::hashes::hex::FromHex;
 use bitcoin::hashes::sha256;
 use bitcoin::{Address, Amount, PrivateKey, PublicKey, SignedAmount, Transaction, ScriptBuf, Script, bip158, bip32, Network};
 use serde::de::Error as SerdeError;
@@ -41,7 +41,7 @@ use std::fmt;
 ///
 /// The module is compatible with the serde attribute.
 pub mod serde_hex {
-    use bitcoin::hex::{FromHex, DisplayHex};
+    use bitcoin::hex::{DisplayHex, FromHex};
     use serde::de::Error;
     use serde::{Deserializer, Serializer};
 
@@ -55,7 +55,7 @@ pub mod serde_hex {
     }
 
     pub mod opt {
-        use bitcoin::hex::{FromHex, DisplayHex};
+        use bitcoin::hex::{DisplayHex, FromHex};
         use serde::de::Error;
         use serde::{Deserializer, Serializer};
 
@@ -175,7 +175,7 @@ pub struct GetWalletInfoResult {
     #[serde(rename = "paytxfee", with = "bitcoin::amount::serde::as_btc")]
     pub pay_tx_fee: Amount,
     #[serde(rename = "hdseedid")]
-    pub hd_seed_id: Option<bitcoin::XKeyIdentifier>,
+    pub hd_seed_id: Option<bitcoin::bip32::XKeyIdentifier>,
     pub private_keys_enabled: bool,
     pub avoid_reuse: Option<bool>,
     pub scanning: Option<ScanningDetails>,
@@ -960,7 +960,7 @@ pub struct GetAddressInfoResultEmbedded {
     #[serde(rename = "hdkeypath")]
     pub hd_key_path: Option<bip32::DerivationPath>,
     #[serde(rename = "hdseedid")]
-    pub hd_seed_id: Option<bitcoin::XKeyIdentifier>,
+    pub hd_seed_id: Option<bitcoin::bip32::XKeyIdentifier>,
     #[serde(default)]
     pub labels: Vec<GetAddressInfoResultLabel>,
 }
@@ -1014,7 +1014,7 @@ pub struct GetAddressInfoResult {
     #[serde(rename = "hdkeypath")]
     pub hd_key_path: Option<bip32::DerivationPath>,
     #[serde(rename = "hdseedid")]
-    pub hd_seed_id: Option<bitcoin::XKeyIdentifier>,
+    pub hd_seed_id: Option<bitcoin::bip32::XKeyIdentifier>,
     pub labels: Vec<GetAddressInfoResultLabel>,
     /// Deprecated in v0.20.0. See `labels` field instead.
     #[deprecated(note = "since Core v0.20.0")]

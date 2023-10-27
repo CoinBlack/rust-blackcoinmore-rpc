@@ -11,7 +11,7 @@
 use std::{error, fmt, io};
 
 use crate::bitcoin;
-use crate::bitcoin::hex;
+use crate::bitcoin::hashes::hex;
 use crate::bitcoin::secp256k1;
 use jsonrpc;
 use serde_json;
@@ -23,7 +23,6 @@ pub enum Error {
     Hex(hex::HexToBytesError),
     Json(serde_json::error::Error),
     BitcoinSerialization(bitcoin::consensus::encode::Error),
-    BitcoinDeserializeHex(bitcoin::consensus::DecodeHexError),
     Secp256k1(secp256k1::Error),
     Io(io::Error),
     InvalidAmount(bitcoin::amount::ParseAmountError),
@@ -58,12 +57,6 @@ impl From<bitcoin::consensus::encode::Error> for Error {
     }
 }
 
-impl From<bitcoin::consensus::DecodeHexError> for Error {
-    fn from(e: bitcoin::consensus::DecodeHexError) -> Error {
-        Error::BitcoinDeserializeHex(e)
-    }
-}
-
 impl From<secp256k1::Error> for Error {
     fn from(e: secp256k1::Error) -> Error {
         Error::Secp256k1(e)
@@ -89,7 +82,6 @@ impl fmt::Display for Error {
             Error::Hex(ref e) => write!(f, "hex decode error: {}", e),
             Error::Json(ref e) => write!(f, "JSON error: {}", e),
             Error::BitcoinSerialization(ref e) => write!(f, "Bitcoin serialization error: {}", e),
-            Error::BitcoinDeserializeHex(ref e) => write!(f, "Bitcoin deserialize hex error: {}", e),
             Error::Secp256k1(ref e) => write!(f, "secp256k1 error: {}", e),
             Error::Io(ref e) => write!(f, "I/O error: {}", e),
             Error::InvalidAmount(ref e) => write!(f, "invalid amount: {}", e),
@@ -111,7 +103,6 @@ impl error::Error for Error {
             Error::Hex(ref e) => Some(e),
             Error::Json(ref e) => Some(e),
             Error::BitcoinSerialization(ref e) => Some(e),
-            Error::BitcoinDeserializeHex(ref e) => Some(e),
             Error::Secp256k1(ref e) => Some(e),
             Error::Io(ref e) => Some(e),
             _ => None,

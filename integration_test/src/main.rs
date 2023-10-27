@@ -17,20 +17,19 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use bitcoin::absolute::LockTime;
-use bitcoin::address::NetworkChecked;
+use bitcoin::address::{NetworkChecked, NetworkUnchecked};
 use blackcoinmore_rpc::json;
 use blackcoinmore_rpc::jsonrpc::error::Error as JsonRpcError;
 use blackcoinmore_rpc::{Auth, Client, Error, RpcApi};
 
 use crate::json::BlockStatsFields as BsFields;
 use bitcoin::consensus::encode::{deserialize, serialize_hex};
-use bitcoin::hex::FromHex;
+use bitcoin::hashes::hex::FromHex;
 use bitcoin::hashes::Hash;
 use bitcoin::{secp256k1, ScriptBuf, sighash};
-use bitcoin::address::{Address, NetworkUnchecked};
 use bitcoin::{
-    Amount, Network, OutPoint, PrivateKey,
-    Sequence, SignedAmount, Transaction, TxIn, TxOut, Txid, Witness,
+    transaction, Address, Amount, Network, OutPoint, PrivateKey, Sequence, SignedAmount,
+    Transaction, TxIn, TxOut, Txid, Witness,
 };
 use blackcoinmore_rpc::blackcoinmore_rpc_json::{
     GetBlockTemplateModes, GetBlockTemplateRules, ScanTxOutRequest,
@@ -589,7 +588,7 @@ fn test_sign_raw_transaction_with_send_raw_transaction(cl: &Client) {
     let unspent = unspent.into_iter().nth(0).unwrap();
 
     let tx = Transaction {
-        version: bitcoin::transaction::Version::ONE,
+        version: transaction::Version::ONE,
         lock_time: LockTime::ZERO,
         input: vec![TxIn {
             previous_output: OutPoint {
@@ -618,7 +617,7 @@ fn test_sign_raw_transaction_with_send_raw_transaction(cl: &Client) {
     let txid = cl.send_raw_transaction(&res.transaction().unwrap()).unwrap();
 
     let tx = Transaction {
-        version: bitcoin::transaction::Version::ONE,
+        version: transaction::Version::ONE,
         lock_time: LockTime::ZERO,
         input: vec![TxIn {
             previous_output: OutPoint {
@@ -1375,6 +1374,7 @@ fn test_add_multisig_address(cl: &Client) {
     assert!(cl.add_multisig_address(addresses.len(), &addresses, None, Some(json::AddressType::Bech32)).is_ok());
 }
 
+#[rustfmt::skip]
 fn test_derive_addresses(cl: &Client) {
     let descriptor = r"pkh(02e96fe52ef0e22d2f131dd425ce1893073a3c6ad20e8cac36726393dfb4856a4c)#62k9sn4x";
     assert_eq!(cl.derive_addresses(descriptor, None).unwrap(), vec!["mrkwtj5xpYQjHeJe5wsweNjVeTKkvR5fCr".parse::<Address<NetworkUnchecked>>().unwrap()]);
