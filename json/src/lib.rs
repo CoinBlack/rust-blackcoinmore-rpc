@@ -1610,9 +1610,12 @@ pub struct GetBlockTemplateResult {
     /// Block size limit
     #[serde(rename = "sizelimit")]
     pub size_limit: u32,
+    // Blackcoin ToDo: enable after SegWit activation
+    /*
     /// Block weight limit
     #[serde(rename = "weightlimit")]
     pub weight_limit: u32,
+    */
     /// Block header version
     pub version: u32,
     /// Block rules that are to be enforced

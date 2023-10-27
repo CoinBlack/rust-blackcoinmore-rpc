@@ -210,7 +210,7 @@ fn main() {
     test_get_net_totals(&cl);
     test_get_network_hash_ps(&cl);
     test_uptime(&cl);
-    // Blackcoin TODO: test_getblocktemplate(&cl);
+    test_getblocktemplate(&cl);
     // Blackcoin TODO: test_unloadwallet(&cl);
     // Blackcoin TODO: test_loadwallet(&cl);
     // Blackcoin TODO: test_backupwallet(&cl);
@@ -1305,7 +1305,8 @@ fn test_getblocktemplate(cl: &Client) {
     // be tested.
     cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
 
-    cl.get_block_template(GetBlockTemplateModes::Template, &[GetBlockTemplateRules::SegWit], &[])
+    // Blackcoin ToDo: change GetBlockTemplateRules::Csv to GetBlockTemplateRules::SegWit after SegWit activation
+    cl.get_block_template(GetBlockTemplateModes::Template, &[GetBlockTemplateRules::Csv], &[])
         .unwrap();
 
     // cleanup mempool transaction
