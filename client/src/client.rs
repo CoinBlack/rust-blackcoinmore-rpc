@@ -1081,6 +1081,8 @@ pub trait RpcApi: Sized {
         self.call("sendrawtransaction", &[tx.raw_hex().into()])
     }
 
+    // Blackcoin: remove estimatesmartfee RPC
+    /*
     fn estimate_smart_fee(
         &self,
         conf_target: u16,
@@ -1089,6 +1091,7 @@ pub trait RpcApi: Sized {
         let mut args = [into_json(conf_target)?, opt_into_json(estimate_mode)?];
         self.call("estimatesmartfee", handle_defaults(&mut args, &[null()]))
     }
+    */
 
     /// Waits for a specific new block and returns useful info about it.
     /// Returns the current block on timeout or exit.

@@ -197,7 +197,10 @@ fn main() {
     test_import_priv_key(&cl);
     test_import_address(&cl);
     test_import_address_script(&cl);
+    // Blackcoin: remove estimatesmartfee RPC
+    /*
     test_estimate_smart_fee(&cl);
+    */
     test_ping(&cl);
     test_get_peer_info(&cl);
     test_rescan_blockchain(&cl);
@@ -1030,6 +1033,8 @@ fn test_import_address_script(cl: &Client) {
     cl.import_address_script(&addr.script_pubkey(), None, None, Some(true)).unwrap();
 }
 
+// Blackcoin: remove estimatesmartfee RPC
+/*
 fn test_estimate_smart_fee(cl: &Client) {
     let mode = json::EstimateMode::Unset;
     let res = cl.estimate_smart_fee(3, Some(mode)).unwrap();
@@ -1047,6 +1052,7 @@ fn test_estimate_smart_fee(cl: &Client) {
     assert!(res.fee_rate.is_some(), "no fee estimate available: {:?}", res.errors);
     assert!(res.fee_rate.unwrap() >= btc(0));
 }
+*/
 
 fn test_ping(cl: &Client) {
     let _ = cl.ping().unwrap();
