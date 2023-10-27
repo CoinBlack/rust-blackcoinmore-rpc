@@ -741,12 +741,13 @@ pub trait RpcApi: Sized {
         self.call("listreceivedbyaddress", handle_defaults(&mut args, &defaults))
     }
 
+    // Blackcoin: remove RBF
     fn create_psbt(
         &self,
         inputs: &[json::CreateRawTransactionInput],
         outputs: &HashMap<String, Amount>,
         locktime: Option<i64>,
-        replaceable: Option<bool>,
+        /* replaceable: Option<bool>, */
     ) -> Result<String> {
         let outs_converted = serde_json::Map::from_iter(
             outputs.iter().map(|(k, v)| (k.clone(), serde_json::Value::from(v.to_btc()))),
@@ -757,17 +758,18 @@ pub trait RpcApi: Sized {
                 into_json(inputs)?,
                 into_json(outs_converted)?,
                 into_json(locktime)?,
-                into_json(replaceable)?,
+                /* into_json(replaceable)?, */
             ],
         )
     }
 
+    // Blackcoin: remove RBF
     fn create_raw_transaction_hex(
         &self,
         utxos: &[json::CreateRawTransactionInput],
         outs: &HashMap<String, Amount>,
         locktime: Option<i64>,
-        replaceable: Option<bool>,
+        /* replaceable: Option<bool>, */
     ) -> Result<String> {
         let outs_converted = serde_json::Map::from_iter(
             outs.iter().map(|(k, v)| (k.clone(), serde_json::Value::from(v.to_btc()))),
@@ -776,20 +778,21 @@ pub trait RpcApi: Sized {
             into_json(utxos)?,
             into_json(outs_converted)?,
             opt_into_json(locktime)?,
-            opt_into_json(replaceable)?,
+            /* opt_into_json(replaceable)?, */
         ];
         let defaults = [into_json(0i64)?, null()];
         self.call("createrawtransaction", handle_defaults(&mut args, &defaults))
     }
 
+    // Blackcoin: remove RBF
     fn create_raw_transaction(
         &self,
         utxos: &[json::CreateRawTransactionInput],
         outs: &HashMap<String, Amount>,
         locktime: Option<i64>,
-        replaceable: Option<bool>,
+        /* replaceable: Option<bool>, */
     ) -> Result<Transaction> {
-        let hex: String = self.create_raw_transaction_hex(utxos, outs, locktime, replaceable)?;
+        let hex: String = self.create_raw_transaction_hex(utxos, outs, locktime, /* replaceable */)?;
         deserialize_hex(&hex)
     }
 
@@ -956,6 +959,7 @@ pub trait RpcApi: Sized {
         self.call("getchaintips", &[])
     }
 
+    // Blackcoin: remove RBF
     fn send_to_address(
         &self,
         address: &Address<NetworkChecked>,
@@ -963,9 +967,11 @@ pub trait RpcApi: Sized {
         comment: Option<&str>,
         comment_to: Option<&str>,
         subtract_fee: Option<bool>,
+        /*
         replaceable: Option<bool>,
         confirmation_target: Option<u32>,
         estimate_mode: Option<json::EstimateMode>,
+        */
     ) -> Result<bitcoin::Txid> {
         let mut args = [
             address.to_string().into(),
@@ -973,15 +979,17 @@ pub trait RpcApi: Sized {
             opt_into_json(comment)?,
             opt_into_json(comment_to)?,
             opt_into_json(subtract_fee)?,
+            /*
             opt_into_json(replaceable)?,
             opt_into_json(confirmation_target)?,
             opt_into_json(estimate_mode)?,
+             */
         ];
         self.call(
             "sendtoaddress",
             handle_defaults(
                 &mut args,
-                &["".into(), "".into(), false.into(), false.into(), 6.into(), null()],
+                &["".into(), "".into(), false.into()/*, false.into(), 6.into(), null() */],
             ),
         )
     }

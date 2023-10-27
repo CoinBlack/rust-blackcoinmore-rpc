@@ -420,20 +420,22 @@ fn test_set_label(cl: &Client) {
     }
 }
 
+// Blackcoin: remove RBF
 fn test_send_to_address(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
-    let est = json::EstimateMode::Conservative;
-    let _ = cl.send_to_address(&addr, btc(1), Some("cc"), None, None, None, None, None).unwrap();
-    let _ = cl.send_to_address(&addr, btc(1), None, Some("tt"), None, None, None, None).unwrap();
-    let _ = cl.send_to_address(&addr, btc(1), None, None, Some(true), None, None, None).unwrap();
-    let _ = cl.send_to_address(&addr, btc(1), None, None, None, Some(true), None, None).unwrap();
-    let _ = cl.send_to_address(&addr, btc(1), None, None, None, None, Some(3), None).unwrap();
-    let _ = cl.send_to_address(&addr, btc(1), None, None, None, None, None, Some(est)).unwrap();
+    /* let est = json::EstimateMode::Conservative; */
+    let _ = cl.send_to_address(&addr, btc(1), Some("cc"), None, None, /* None, None, None */).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, Some("tt"), None, /* None, None, None */).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, None, Some(true), /* None, None, None */).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, None, None, /* Some(true), None, None */).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, None, None, /* None, Some(3), None */).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, None, None, /* None, None, Some(est) */).unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_get_received_by_address(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
-    let _ = cl.send_to_address(&addr, btc(1), None, None, None, None, None, None).unwrap();
+    let _ = cl.send_to_address(&addr, btc(1), None, None, None, /* None, None, None */).unwrap();
     assert_eq!(cl.get_received_by_address(&addr, Some(0)).unwrap(), btc(1));
     assert_eq!(cl.get_received_by_address(&addr, Some(1)).unwrap(), btc(0));
     let _ = cl.generate_to_address(7, &cl.get_new_address(None, None).unwrap().assume_checked()).unwrap();
@@ -441,16 +443,17 @@ fn test_get_received_by_address(cl: &Client) {
     assert_eq!(cl.get_received_by_address(&addr, None).unwrap(), btc(1));
 }
 
+// Blackcoin: remove RBF
 fn test_list_unspent(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap();
     let addr_checked = addr.clone().assume_checked();
-    let txid = cl.send_to_address(&addr.clone().assume_checked(), btc(1), None, None, None, None, None, None).unwrap();
+    let txid = cl.send_to_address(&addr.clone().assume_checked(), btc(1), None, None, None, /* None, None, None */).unwrap();
     let unspent = cl.list_unspent(Some(0), None, Some(&[ &addr_checked]), None, None).unwrap();
     assert_eq!(unspent[0].txid, txid);
     assert_eq!(unspent[0].address.as_ref(), Some(&addr));
     assert_eq!(unspent[0].amount, btc(1));
 
-    let txid = cl.send_to_address(&addr_checked, btc(7), None, None, None, None, None, None).unwrap();
+    let txid = cl.send_to_address(&addr_checked, btc(7), None, None, None, /* None, None, None */).unwrap();
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(7)),
         maximum_amount: Some(btc(7)),
@@ -471,9 +474,10 @@ fn test_get_connection_count(cl: &Client) {
     let _ = cl.get_connection_count().unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_get_raw_transaction(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
-    let txid = cl.send_to_address(&addr, btc(1), None, None, None, None, None, None).unwrap();
+    let txid = cl.send_to_address(&addr, btc(1), None, None, None, /* None, None, None */).unwrap();
     let tx = cl.get_raw_transaction(&txid, None).unwrap();
     let hex = cl.get_raw_transaction_hex(&txid, None).unwrap();
     assert_eq!(tx, deserialize(&Vec::<u8>::from_hex(&hex).unwrap()).unwrap());
@@ -490,17 +494,19 @@ fn test_get_raw_mempool(cl: &Client) {
     let _ = cl.get_raw_mempool().unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_get_raw_mempool_verbose(cl: &Client) {
-    cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+    cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let _ = cl.get_raw_mempool_verbose().unwrap();
 
     // cleanup mempool transaction
     cl.generate_to_address(2, &RANDOM_ADDRESS).unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_get_transaction(cl: &Client) {
     let txid =
-        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let tx = cl.get_transaction(&txid, None).unwrap();
     assert_eq!(tx.amount, sbtc(-1.0));
     assert_eq!(tx.info.txid, txid);
@@ -523,9 +529,10 @@ fn test_list_since_block(cl: &Client) {
     assert!(!r.transactions.is_empty());
 }
 
+// Blackcoin: remove RBF
 fn test_get_tx_out(cl: &Client) {
     let txid =
-        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let out = cl.get_tx_out(&txid, 0, Some(false)).unwrap();
     assert!(out.is_none());
     let out = cl.get_tx_out(&txid, 0, Some(true)).unwrap();
@@ -533,19 +540,21 @@ fn test_get_tx_out(cl: &Client) {
     let _ = cl.get_tx_out(&txid, 0, None).unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_get_tx_out_proof(cl: &Client) {
     let txid1 =
-        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let txid2 =
-        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let blocks = cl.generate_to_address(7, &cl.get_new_address(None, None).unwrap().assume_checked()).unwrap();
     let proof = cl.get_tx_out_proof(&[txid1, txid2], Some(&blocks[0])).unwrap();
     assert!(!proof.is_empty());
 }
 
+// Blackcoin: remove RBF
 fn test_get_mempool_entry(cl: &Client) {
     let txid =
-        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+        cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
     let entry = cl.get_mempool_entry(&txid).unwrap();
     assert!(entry.spent_by.is_empty());
 
@@ -553,9 +562,10 @@ fn test_get_mempool_entry(cl: &Client) {
     assert!(cl.get_mempool_entry(&fake).is_err());
 }
 
+// Blackcoin: remove RBF
 fn test_lock_unspent_unlock_unspent(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
-    let txid = cl.send_to_address(&addr, btc(1), None, None, None, None, None, None).unwrap();
+    let txid = cl.send_to_address(&addr, btc(1), None, None, None, /* None, None, None*/).unwrap();
 
     assert!(cl.lock_unspent(&[OutPoint::new(txid, 0)]).unwrap());
     assert!(cl.unlock_unspent(&[OutPoint::new(txid, 0)]).unwrap());
@@ -653,6 +663,7 @@ fn test_key_pool_refill(cl: &Client) {
     cl.key_pool_refill(None).unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_create_raw_transaction(cl: &Client) {
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(2)),
@@ -670,12 +681,13 @@ fn test_create_raw_transaction(cl: &Client) {
     output.insert(RANDOM_ADDRESS.to_string(), btc(1));
 
     let tx =
-        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000), Some(true)).unwrap();
-    let hex = cl.create_raw_transaction_hex(&[input], &output, Some(500_000), Some(true)).unwrap();
+        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000), /* Some(true) */).unwrap();
+    let hex = cl.create_raw_transaction_hex(&[input], &output, Some(500_000), /* Some(true) */).unwrap();
     assert_eq!(tx, deserialize(&Vec::<u8>::from_hex(&hex).unwrap()).unwrap());
     assert_eq!(hex, serialize_hex(&tx));
 }
 
+// Blackcoin: remove RBF
 fn test_decode_raw_transaction(cl: &Client) {
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(2)),
@@ -693,8 +705,8 @@ fn test_decode_raw_transaction(cl: &Client) {
     output.insert(RANDOM_ADDRESS.to_string(), btc(1));
 
     let tx =
-        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000), Some(true)).unwrap();
-    let hex = cl.create_raw_transaction_hex(&[input], &output, Some(500_000), Some(true)).unwrap();
+        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000),/* Some(true) */).unwrap();
+    let hex = cl.create_raw_transaction_hex(&[input], &output, Some(500_000),/*  Some(true) */).unwrap();
 
     let decoded_transaction = cl.decode_raw_transaction(hex, None).unwrap();
 
@@ -705,6 +717,7 @@ fn test_decode_raw_transaction(cl: &Client) {
     assert_eq!(decoded_transaction.vout[0].clone().value, btc(1));
 }
 
+// Blackcoin: remove RBF
 fn test_fund_raw_transaction(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
     let mut output = HashMap::new();
@@ -719,11 +732,13 @@ fn test_fund_raw_transaction(cl: &Client) {
         lock_unspents: Some(true),
         fee_rate: Some(*FEE),
         subtract_fee_from_outputs: Some(vec![0]),
+        /*
         replaceable: Some(true),
         conf_target: None,
         estimate_mode: None,
+        */
     };
-    let tx = cl.create_raw_transaction_hex(&[], &output, Some(500_000), Some(true)).unwrap();
+    let tx = cl.create_raw_transaction_hex(&[], &output, Some(500_000)/* , Some(true) */).unwrap();
     let funded = cl.fund_raw_transaction(tx, Some(&options), Some(false)).unwrap();
     let _ = funded.transaction().unwrap();
 
@@ -736,15 +751,18 @@ fn test_fund_raw_transaction(cl: &Client) {
         lock_unspents: Some(true),
         fee_rate: None,
         subtract_fee_from_outputs: Some(vec![0]),
+        /*
         replaceable: Some(true),
         conf_target: Some(2),
         estimate_mode: Some(json::EstimateMode::Conservative),
+        */
     };
-    let tx = cl.create_raw_transaction_hex(&[], &output, Some(500_000), Some(true)).unwrap();
+    let tx = cl.create_raw_transaction_hex(&[], &output, Some(500_000),/*  Some(true) */).unwrap();
     let funded = cl.fund_raw_transaction(tx, Some(&options), Some(false)).unwrap();
     let _ = funded.transaction().unwrap();
 }
 
+// Blackcoin: remove RBF
 fn test_test_mempool_accept(cl: &Client) {
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(2)),
@@ -762,7 +780,7 @@ fn test_test_mempool_accept(cl: &Client) {
     output.insert(RANDOM_ADDRESS.to_string(), unspent.amount - *FEE);
 
     let tx =
-        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000), Some(false)).unwrap();
+        cl.create_raw_transaction(&[input.clone()], &output, Some(500_000)/* , Some(false) */).unwrap();
     let res = cl.test_mempool_accept(&[&tx]).unwrap();
     assert!(!res[0].allowed);
     assert!(res[0].reject_reason.is_some());
@@ -772,6 +790,7 @@ fn test_test_mempool_accept(cl: &Client) {
     assert!(res[0].allowed, "not allowed: {:?}", res[0].reject_reason);
 }
 
+// Blackcoin: remove RBF
 fn test_wallet_create_funded_psbt(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap();
     let options = json::ListUnspentQueryOptions {
@@ -798,9 +817,11 @@ fn test_wallet_create_funded_psbt(cl: &Client) {
         lock_unspent: Some(true),
         fee_rate: Some(*FEE),
         subtract_fee_from_outputs: vec![0],
+        /*
         replaceable: Some(true),
         conf_target: None,
         estimate_mode: None,
+        */
     };
     let _ = cl
         .wallet_create_funded_psbt(
@@ -821,9 +842,11 @@ fn test_wallet_create_funded_psbt(cl: &Client) {
         lock_unspent: Some(true),
         fee_rate: None,
         subtract_fee_from_outputs: vec![0],
+        /*
         replaceable: Some(true),
         conf_target: Some(3),
         estimate_mode: Some(json::EstimateMode::Conservative),
+        */
     };
     let psbt = cl
         .wallet_create_funded_psbt(&[input], &output, Some(500_000), Some(options), Some(true))
@@ -909,6 +932,7 @@ fn test_combine_psbt(cl: &Client) {
     assert!(!psbt.is_empty());
 }
 
+// Blackcoin: remove RBF
 fn test_combine_raw_transaction(cl: &Client) {
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(2)),
@@ -923,13 +947,14 @@ fn test_combine_raw_transaction(cl: &Client) {
     };
     let mut output = HashMap::new();
     output.insert(RANDOM_ADDRESS.to_string(), btc(1));
-    let tx = cl.create_raw_transaction_hex(&[input.clone()], &output, Some(500_000), None).unwrap();
+    let tx = cl.create_raw_transaction_hex(&[input.clone()], &output, Some(500_000)/*, None */).unwrap();
 
     let transaction = cl.combine_raw_transaction(&[tx.clone(), tx]).unwrap();
 
     assert!(!transaction.is_empty());
 }
 
+// Blackcoin: remove RBF
 fn test_create_psbt(cl: &Client) {
     let options = json::ListUnspentQueryOptions {
         minimum_amount: Some(btc(2)),
@@ -946,7 +971,7 @@ fn test_create_psbt(cl: &Client) {
     let mut output = HashMap::new();
     output.insert(RANDOM_ADDRESS.to_string(), btc(1));
 
-    let _ = cl.create_psbt(&[input], &output, Some(500_000), Some(true)).unwrap();
+    let _ = cl.create_psbt(&[input], &output, Some(500_000), /* Some(true) */).unwrap();
 }
 
 fn test_finalize_psbt(cl: &Client) {
@@ -973,9 +998,10 @@ fn test_finalize_psbt(cl: &Client) {
     //assert!(res.hex.is_some());
 }
 
+// Blackcoin: remove RBF
 fn test_list_received_by_address(cl: &Client) {
     let addr = cl.get_new_address(None, None).unwrap().assume_checked();
-    let txid = cl.send_to_address(&addr, btc(1), None, None, None, None, None, None).unwrap();
+    let txid = cl.send_to_address(&addr, btc(1), None, None, None, /* None, None, None */).unwrap();
 
     let _ = cl.list_received_by_address(Some(&addr), None, None, None).unwrap();
     let _ = cl.list_received_by_address(Some(&addr), None, Some(true), None).unwrap();
@@ -1271,12 +1297,13 @@ fn test_scantxoutset(cl: &Client) {
     assert_eq!(utxos.success, Some(true));
 }
 
+// Blackcoin: remove RBF
 fn test_getblocktemplate(cl: &Client) {
     // We want to have a transaction in the mempool so the GetBlockTemplateResult
     // contains an entry in the vector of GetBlockTemplateResultTransaction.
     // Otherwise the GetBlockTemplateResultTransaction deserialization wouldn't
     // be tested.
-    cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, None, None, None).unwrap();
+    cl.send_to_address(&RANDOM_ADDRESS, btc(1), None, None, None, /* None, None, None */).unwrap();
 
     cl.get_block_template(GetBlockTemplateModes::Template, &[GetBlockTemplateRules::SegWit], &[])
         .unwrap();

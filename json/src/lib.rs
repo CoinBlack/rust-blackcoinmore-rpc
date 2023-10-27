@@ -1760,6 +1760,7 @@ pub struct WalletProcessPsbtResult {
 
 /// Models the request for "walletcreatefundedpsbt"
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, Default)]
+// Blackcoin: remove RBF
 pub struct WalletCreateFundedPsbtOptions {
     /// For a transaction with existing inputs, automatically include more if they are not enough (default true).
     /// Added in Bitcoin Core v0.21
@@ -1783,12 +1784,15 @@ pub struct WalletCreateFundedPsbtOptions {
     pub fee_rate: Option<Amount>,
     #[serde(rename = "subtractFeeFromOutputs", skip_serializing_if = "Vec::is_empty")]
     pub subtract_fee_from_outputs: Vec<u16>,
+    // Blackcoin: remove RBF
+    /*
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replaceable: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub conf_target: Option<u16>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub estimate_mode: Option<EstimateMode>,
+    */
 }
 
 /// Models the result of "finalizepsbt"
@@ -1925,12 +1929,15 @@ pub struct FundRawTransactionOptions {
     pub fee_rate: Option<Amount>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub subtract_fee_from_outputs: Option<Vec<u32>>,
+    // Blackcoin: remove RBF
+    /*
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replaceable: Option<bool>,
     #[serde(rename = "conf_target", skip_serializing_if = "Option::is_none")]
     pub conf_target: Option<u32>,
     #[serde(rename = "estimate_mode", skip_serializing_if = "Option::is_none")]
     pub estimate_mode: Option<EstimateMode>,
+    */
 }
 
 #[derive(Deserialize, Clone, PartialEq, Eq, Debug)]
