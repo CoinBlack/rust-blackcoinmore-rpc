@@ -230,7 +230,7 @@ fn main() {
     test_disconnect_node(&cl);
     test_add_ban(&cl);
     test_set_network_active(&cl);
-    // Blackcoin TODO: test_get_index_info(&cl);
+    test_get_index_info(&cl);
     test_stop(cl);
 }
 
