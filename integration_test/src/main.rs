@@ -202,7 +202,7 @@ fn main() {
     test_estimate_smart_fee(&cl);
     */
     test_ping(&cl);
-    // Blackcoin TODO: test_get_peer_info(&cl);
+    test_get_peer_info(&cl);
     test_rescan_blockchain(&cl);
     // Blackcoin TODO: test_create_wallet(&cl);
     test_get_tx_out_set_info(&cl);
