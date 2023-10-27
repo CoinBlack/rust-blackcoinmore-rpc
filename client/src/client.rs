@@ -325,7 +325,7 @@ pub trait RpcApi: Sized {
         self.call("encryptwallet", &[into_json(passphrase)?])
     }
 
-    fn get_difficulty(&self) -> Result<f64> {
+    fn get_difficulty(&self) -> Result<json::GetDifficultyResult> {
         self.call("getdifficulty", &[])
     }
 

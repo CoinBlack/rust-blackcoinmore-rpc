@@ -1069,6 +1069,17 @@ pub struct GetBlockchainInfoResult {
     pub warnings: String,
 }
 
+/// Models the result of "getdifficulty"
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct GetDifficultyResult {
+    #[serde(rename = "proof-of-work")]
+    /// The current PoW difficulty
+    pub pow_difficulty: f64,
+    #[serde(rename = "proof-of-stake")]
+    /// The current PoS difficulty
+    pub pos_difficulty: f64,
+}
+
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ImportMultiRequestScriptPubkey<'a> {
     Address(&'a Address),

@@ -164,7 +164,7 @@ fn main() {
     // Blackcoin TODO: test_send_to_address(&cl);
     test_get_received_by_address(&cl);
     test_list_unspent(&cl);
-    // Blackcoin TODO: test_get_difficulty(&cl);
+    test_get_difficulty(&cl);
     test_get_connection_count(&cl);
     // Blackcoin TODO: test_get_raw_transaction(&cl);
     test_get_raw_mempool(&cl);
