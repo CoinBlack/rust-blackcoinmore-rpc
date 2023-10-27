@@ -218,7 +218,7 @@ fn main() {
     test_wait_for_block(&cl);
     test_get_descriptor_info(&cl);
     // Blackcoin TODO: test_derive_addresses(&cl);
-    // Blackcoin TODO: test_get_mempool_info(&cl);
+    test_get_mempool_info(&cl);
     // Blackcoin TODO: test_add_multisig_address(&cl);
     //TODO import_multi(
     //TODO verify_message(
