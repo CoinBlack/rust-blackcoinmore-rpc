@@ -1097,15 +1097,21 @@ pub struct GetMempoolInfoResult {
     /// Current minimum relay fee for transactions
     #[serde(rename = "minrelaytxfee", with = "bitcoin::amount::serde::as_btc")]
     pub min_relay_tx_fee: Amount,
+    // Blackcoin: remove incrementalrelayfee
+    /*
     /// Minimum fee rate increment for mempool limiting or replacement in BTC/kvB
     #[serde(rename = "incrementalrelayfee", default, with = "bitcoin::amount::serde::as_btc::opt")]
     pub incremental_relay_fee: Option<Amount>,
+    */
     /// Current number of transactions that haven't passed initial broadcast yet
     #[serde(rename = "unbroadcastcount")]
     pub unbroadcast_count: Option<usize>,
+    // Blackcoin: remove fullrbf
+    /*
     /// True if the mempool accepts RBF without replaceability signaling inspection
     #[serde(rename = "fullrbf")]
     pub full_rbf: Option<bool>,
+    */
 }
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]

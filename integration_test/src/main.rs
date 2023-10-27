@@ -1406,6 +1406,8 @@ fn test_get_mempool_info(cl: &Client) {
         assert!(res.total_fee.is_none());
     }
 
+    // Blackcoin: remove incrementalrelayfee and fullrbf
+    /*
     if version() >= 240000 {
         assert!(res.incremental_relay_fee.is_some());
         assert!(res.full_rbf.is_some());
@@ -1413,6 +1415,7 @@ fn test_get_mempool_info(cl: &Client) {
         assert!(res.incremental_relay_fee.is_none());
         assert!(res.full_rbf.is_none());
     }
+    */
 }
 
 fn test_get_index_info(cl: &Client) {
