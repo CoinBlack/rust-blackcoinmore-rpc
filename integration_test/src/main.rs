@@ -156,7 +156,7 @@ fn main() {
     test_get_block_count(&cl);
     test_get_block_hash(&cl);
     // Blackcoin TODO: test_get_block(&cl);
-    // Blackcoin TODO: test_get_block_header_get_block_header_info(&cl);
+    test_get_block_header_get_block_header_info(&cl);
     test_get_block_stats(&cl);
     test_get_block_stats_fields(&cl);
     // Blackcoin TODO: test_get_address_info(&cl);
