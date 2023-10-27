@@ -19,11 +19,11 @@ PID1=$!
 sleep 3
 
 BLOCKFILTERARG=""
-if blackmored -version | grep -q "v0\.\(19\|2\)"; then
+if blackmored -version | grep -q "v25\."; then
     BLOCKFILTERARG="-blockfilterindex=1"
 fi
 
-./blackmored -regtest $BLOCKFILTERARG \
+blackmored -regtest $BLOCKFILTERARG \
     -datadir=${TESTDIR}/2 \
     -connect=127.0.0.1:12348 \
     -rpcport=12349 \

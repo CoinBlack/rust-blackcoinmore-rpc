@@ -176,7 +176,7 @@ fn main() {
     test_get_tx_out_proof(&cl);
     test_get_mempool_entry(&cl);
     test_lock_unspent_unlock_unspent(&cl);
-    // Blackcoin TODO: test_get_block_filter(&cl);
+    test_get_block_filter(&cl);
     // Blackcoin TODO: test_sign_raw_transaction_with_send_raw_transaction(&cl);
     test_invalidate_block_reconsider_block(&cl);
     test_key_pool_refill(&cl);
