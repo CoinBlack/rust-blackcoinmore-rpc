@@ -6,6 +6,6 @@ edition = "2018"
 
 [dependencies]
 blackcoinmore-rpc = { path = "../client" }
-bitcoin = { version = "0.31.0-rc2", features = ["serde", "rand", "rand-std"], git = "http://github.com/CoinBlack/rust-blackcoin", branch = "develop" }
+bitcoin = { version = "0.31.0", features = ["serde", "rand", "rand-std"], git = "http://github.com/CoinBlack/rust-blackcoin" }
 lazy_static = "1.4.0"
 log = "0.4"

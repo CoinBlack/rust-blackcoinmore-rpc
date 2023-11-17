@@ -1406,7 +1406,10 @@ fn test_add_multisig_address(cl: &Client) {
 #[rustfmt::skip]
 fn test_derive_addresses(cl: &Client) {
     let descriptor = r"pkh(02e96fe52ef0e22d2f131dd425ce1893073a3c6ad20e8cac36726393dfb4856a4c)#62k9sn4x";
-    assert_eq!(cl.derive_addresses(descriptor, None).unwrap(), vec!["mrkwtj5xpYQjHeJe5wsweNjVeTKkvR5fCr".parse::<Address<NetworkUnchecked>>().unwrap()]);
+    assert_eq!(
+        cl.derive_addresses(descriptor, None).unwrap(),
+        vec!["mrkwtj5xpYQjHeJe5wsweNjVeTKkvR5fCr".parse::<Address<NetworkUnchecked>>().unwrap()]
+    );
     assert!(cl.derive_addresses(descriptor, Some([0, 1])).is_err()); // Range should not be specified for an unranged descriptor
 
     let descriptor = std::concat!(
