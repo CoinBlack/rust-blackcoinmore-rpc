@@ -146,8 +146,8 @@ fn main() {
 
     test_get_mining_info(&cl);
     test_get_blockchain_info(&cl);
-    // Blackcoin TODO: test_get_new_address(&cl);
-    // Blackcoin TODO: test_get_raw_change_address(&cl);
+    test_get_new_address(&cl);
+    test_get_raw_change_address(&cl);
     // Blackcoin TODO: test_dump_private_key(&cl);
     test_generate(&cl);
     test_get_balance_generate_to_address(&cl);
@@ -159,9 +159,9 @@ fn main() {
     test_get_block_header_get_block_header_info(&cl);
     test_get_block_stats(&cl);
     test_get_block_stats_fields(&cl);
-    // Blackcoin TODO: test_get_address_info(&cl);
+    test_get_address_info(&cl);
     test_set_label(&cl);
-    // Blackcoin TODO: test_send_to_address(&cl);
+    test_send_to_address(&cl);
     test_get_received_by_address(&cl);
     test_list_unspent(&cl);
     test_get_difficulty(&cl);
