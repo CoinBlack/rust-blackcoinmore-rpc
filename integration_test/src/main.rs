@@ -142,13 +142,14 @@ fn main() {
     unsafe { VERSION = cl.version().unwrap() };
     println!("Version: {}", version());
 
-    cl.create_wallet("testwallet", None, None, None, None, None).unwrap();
+    // Blackcoin: explicitly set the wallet as legacy, not a descriptor
+    cl.create_wallet("testwallet", None, None, None, None, Some(false)).unwrap();
 
     test_get_mining_info(&cl);
     test_get_blockchain_info(&cl);
     test_get_new_address(&cl);
     test_get_raw_change_address(&cl);
-    // Blackcoin TODO: test_dump_private_key(&cl);
+    test_dump_private_key(&cl);
     test_generate(&cl);
     test_get_balance_generate_to_address(&cl);
     test_get_balances_generate_to_address(&cl);
@@ -191,12 +192,12 @@ fn main() {
     // Blackcoin TODO: test_combine_raw_transaction(&cl);
     // Blackcoin TODO: test_create_psbt(&cl);
     // Blackcoin TODO: test_finalize_psbt(&cl);
-    // Blackcoin TODO: test_list_received_by_address(&cl);
+    test_list_received_by_address(&cl);
     test_scantxoutset(&cl);
-    // Blackcoin TODO: test_import_public_key(&cl);
-    // Blackcoin TODO: test_import_priv_key(&cl);
-    // Blackcoin TODO: test_import_address(&cl);
-    // Blackcoin TODO: test_import_address_script(&cl);
+    test_import_public_key(&cl);
+    test_import_priv_key(&cl);
+    test_import_address(&cl);
+    test_import_address_script(&cl);
     // Blackcoin: remove estimatesmartfee RPC
     /*
     test_estimate_smart_fee(&cl);
@@ -219,7 +220,7 @@ fn main() {
     test_get_descriptor_info(&cl);
     // Blackcoin TODO: test_derive_addresses(&cl);
     test_get_mempool_info(&cl);
-    // Blackcoin TODO: test_add_multisig_address(&cl);
+    test_add_multisig_address(&cl);
     //TODO import_multi(
     //TODO verify_message(
     //TODO encrypt_wallet(&self, passphrase: &str) -> Result<()> {
@@ -1187,7 +1188,8 @@ fn test_create_wallet(cl: &Client) {
         let has_private_keys = !wallet_param.disable_private_keys.unwrap_or(false);
         assert_eq!(wallet_info.private_keys_enabled, has_private_keys);
         // Blackcoin: descriptor wallets don't have HD seeds
-        let has_hd_seed = has_private_keys && !wallet_param.blank.unwrap_or(false) &&
+        let has_hd_seed = has_private_keys &&
+            !wallet_param.blank.unwrap_or(false) &&
             !wallet_param.descriptor.unwrap_or(true);
         assert_eq!(wallet_info.hd_seed_id.is_some(), has_hd_seed);
         let has_avoid_reuse = wallet_param.avoid_reuse.unwrap_or(false);
