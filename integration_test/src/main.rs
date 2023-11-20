@@ -142,7 +142,7 @@ fn main() {
     unsafe { VERSION = cl.version().unwrap() };
     println!("Version: {}", version());
 
-    cl.create_wallet("testwallet", None, None, None, None).unwrap();
+    cl.create_wallet("testwallet", None, None, None, None, None).unwrap();
 
     test_get_mining_info(&cl);
     test_get_blockchain_info(&cl);
@@ -1108,6 +1108,7 @@ fn test_create_wallet(cl: &Client) {
         blank: Option<bool>,
         passphrase: Option<&'a str>,
         avoid_reuse: Option<bool>,
+        descriptor: Option<bool>,
     }
 
     let mut wallet_params = vec![
@@ -1117,6 +1118,7 @@ fn test_create_wallet(cl: &Client) {
             blank: None,
             passphrase: None,
             avoid_reuse: None,
+            descriptor: None,
         },
         WalletParams {
             name: wallet_names[1],
@@ -1124,6 +1126,7 @@ fn test_create_wallet(cl: &Client) {
             blank: None,
             passphrase: None,
             avoid_reuse: None,
+            descriptor: None,
         },
         WalletParams {
             name: wallet_names[2],
@@ -1131,6 +1134,7 @@ fn test_create_wallet(cl: &Client) {
             blank: Some(true),
             passphrase: None,
             avoid_reuse: None,
+            descriptor: None,
         },
     ];
 
@@ -1141,6 +1145,7 @@ fn test_create_wallet(cl: &Client) {
             blank: None,
             passphrase: Some("pass"),
             avoid_reuse: None,
+            descriptor: None,
         });
         wallet_params.push(WalletParams {
             name: wallet_names[4],
@@ -1148,6 +1153,7 @@ fn test_create_wallet(cl: &Client) {
             blank: None,
             passphrase: None,
             avoid_reuse: Some(true),
+            descriptor: Some(false),
         });
     }
 
@@ -1159,6 +1165,7 @@ fn test_create_wallet(cl: &Client) {
                 wallet_param.blank,
                 wallet_param.passphrase,
                 wallet_param.avoid_reuse,
+                wallet_param.descriptor,
             )
             .unwrap();
 
@@ -1314,7 +1321,7 @@ fn test_getblocktemplate(cl: &Client) {
 }
 
 fn test_unloadwallet(cl: &Client) {
-    cl.create_wallet("testunloadwallet", None, None, None, None).unwrap();
+    cl.create_wallet("testunloadwallet", None, None, None, None, None).unwrap();
 
     let res = new_wallet_client("testunloadwallet")
         .unload_wallet(None)
@@ -1332,7 +1339,7 @@ fn test_loadwallet(_: &Client) {
     let wallet_client = new_wallet_client(wallet_name);
 
     assert!(wallet_client.load_wallet(wallet_name).is_err());
-    wallet_client.create_wallet(wallet_name, None, None, None, None).unwrap();
+    wallet_client.create_wallet(wallet_name, None, None, None, None, None).unwrap();
     assert!(wallet_client.load_wallet(wallet_name).is_err());
     wallet_client.unload_wallet(None).unwrap();
 
@@ -1347,7 +1354,7 @@ fn test_backupwallet(_: &Client) {
 
     assert!(wallet_client.backup_wallet(None).is_err());
     assert!(wallet_client.backup_wallet(Some(&backup_path)).is_err());
-    wallet_client.create_wallet("testbackupwallet", None, None, None, None).unwrap();
+    wallet_client.create_wallet("testbackupwallet", None, None, None, None, None).unwrap();
     assert!(wallet_client.backup_wallet(None).is_err());
     assert!(wallet_client.backup_wallet(Some(&backup_path)).is_ok());
 }
